@@ -1,0 +1,35 @@
+<div class="payment-title">
+    <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" [hidden]="purchaseStatus === 200 || quantity === undefined" >
+        <br/>
+        <label>Prénom:</label><br>
+        <input type="text" name="firstName" formControlName="firstName" style="width: 200px;" placeholder="John" ><br><br/>
+        <label>Nom:</label><br>
+        <input type="text" name="lastName" formControlName="lastName" style="width: 200px;" placeholder="Doe" required><br><br>
+        <!-- <div *ngIf="purchaseForm.controls['lastName'].invalid && (purchaseForm.controls['lastName'].dirty || purchaseForm.controls['lastName'].touched)"
+        class="alert alert-danger"> -->
+        <!-- <div *ngIf="purchaseForm.controls['lastName'].errors?.required">
+            Le nom est obligatoire
+        </div>
+        <div *ngIf="purchaseForm.controls['lastName'].errors?.erreur">
+            Première lettre en majuscule
+        </div> -->
+        <!-- </div> -->
+        <label>N°:</label><br>
+        <input type="text" name="nStreet" formControlName="nStreet" style="width: 25px;" placeholder="1"><br><br>
+        <label>Rue:</label><br>
+        <input type="text" name="street" formControlName="street" style="width: 200px;" placeholder="rue de la lune" required><br><br>
+        <label>Ville:</label><br>
+        <input type="text" pattern="[a-zA-Z ]*" name="city" formControlName="city" style="width: 150px;" placeholder="Paris" required><br><br>
+        <label>CP:</label><br>
+        <input type="text" name="zipCode" formControlName="zipCode" style="width: 50px;" placeholder="75001" required><br><br>
+        <h1>Informations de paiement</h1>
+        <h2>{{ quantity }} article(s)</h2>
+        <h2>Prix total à payer: {{ totalPrice | number:'1.2-2' }}€</h2>
+        <button type="submit" [ngClass]="{'bckGndGreen': purchaseForm.valid === true }" [disabled]="!purchaseForm.valid">Valider le paiement</button>&nbsp;
+        <button type="cancel" (click)="cancelPurchase()">Annuler le paiement</button>&nbsp;
+        </form>
+        <div *ngIf="purchaseStatus === 200 && purchaseCancel === false" style="color: blue;"><b>Paiement validé de {{ totalPrice | number:'1.2-2' }}€</b></div> 
+        <div *ngIf="purchaseStatus === 204 && purchaseCancel === false" style="color: red;"><b>Le paiement a échoué !</b></div> 
+        <div *ngIf="purchaseCancel === true" style="color: peru;"><b>Le paiement a été annulé !</b></div> 
+    <br/>
+</div>

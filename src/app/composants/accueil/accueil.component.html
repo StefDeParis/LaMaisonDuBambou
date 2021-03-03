@@ -1,0 +1,73 @@
+<!-- search bar & menu -->
+<div class="topnav" id="bckGndImg">
+  <a class="active" href="#home">Home</a>
+  <a href="/about">About</a>
+  <!-- <a href="/contact">Contact</a> -->
+
+  <div class="search-container">
+    <br/><br/>
+      <select name="category" id="categories" #cat (change)="handleCategory(cat.value)">
+        <option *ngFor="let c of categories">{{c.name}}</option>
+      </select>
+      <input type="text" placeholder="Recherche..." name="search" #filter (input)="handleFilter(filter.value)">
+      <button type="text" name="clear"><img src="../assets/images/bt_clear.png" (click)="filter.value=''; handleBtClear()" width="15px" height="15px"></button>
+      <h1 style="margin-left: 10px;"><strong>La maison du bambou</strong></h1>
+  </div>
+</div>
+
+<!-- Chart table-->
+<div>
+  <button [hidden]="!bChart" (click)="bHideShowBtChart = !bHideShowBtChart" style="float:right; background-color: yellow;">{{bHideShowBtChart ? "Montrer le panier" : "Cacher le panier"}}</button>
+<table style="width:100%" [hidden]="!bChart || bHideShowBtChart">
+  <tr *ngFor="let item of myChart; let i=index">
+    <th><img src="{{ item.imgUrl }}" width="60px" height="60px"></th>
+    <th><h3>Prix unitaire: {{ item.price | number:'1.2-2' }}</h3></th>
+    <th><h3>Nombre d'articles: {{ item.quantity }}</h3></th>
+    <th><h3>Sous-total des articles: {{ getMult(item.quantity, item.price) | number:'1.2-2' }}€</h3></th>
+    <th><button (click)="handleDeleteArticleChart(i)" type="text" style="color: white; background-color: brown;">Supprimer</button></th>
+  </tr>
+  <tr>
+    <th></th><th></th>
+    <th><h2>Total du nombre d'articles: {{ handleTotalChartArticles() }}</h2></th>
+    <th><h2>Total du prix du panier: {{ handleTotalChartPrice() | number:'1.2-2' }}€</h2></th>
+    <td style="text-align: center"><button (click)="handlePay(handleTotalChartArticles(), handleTotalChartPrice())" type="text"><img src="../assets/images/bt_valider_panier.png" width="150px" height="40px"></button></td>
+  </tr>
+</table>
+</div>
+
+<!-- Articles table-->
+<br/>
+<table style="width:100%">
+  <tr>
+    <th>Nombre d'acticles trouvés: {{ fctFilterArticles() }}</th>
+    <th></th>
+    <th></th>
+  </tr><br/>
+  <tr style="vertical-align:top" *ngFor="let elt of filterArticles; let i=index" >
+    <td><img src="{{ elt.imgUrl }}" width="400px" height="400px"></td>
+    <td>
+        <ul>
+            <li><h2 style="color:rgb(74, 58, 165)"><strong>{{ elt.title }}</strong></h2></li>
+            <li class="new-line" style="white-space: pre-wrap"><h2 style="color:rgb(31, 36, 39)">{{ elt.description }}</h2></li><br/>
+            <!-- <li class="new-line"><h2 style="color:rgb(31, 36, 39)">{{ elt.description }}</h2></li><br/> -->
+            <li>
+              <h2 style="color:black"><strong>{{ elt.price | number:'1.2-2' }}€</strong></h2>
+              <div class="form-row">
+                <label class="form-label" >Quantité</label>
+                <div>
+                  <button class="toggle-less" (click)="handleDecQuantity(i)">-</button>
+                  <label name="range-value" style="margin: 10px">{{ elt.quantity }}</label>
+                  <button class="toggle-more" (click)="handleIncQuantity(i)">+</button>
+                </div>
+              </div>
+            </li>
+        </ul>           
+    </td>
+    <td>
+        <button (click)="bChart = true; handleAddToChart(i)" type="submit" name="submit"><img src="../assets/images/bt_ajouter_au_panier.jpg" width="150px" height="50px"></button>
+        <br/><br/>
+        <button (click)="handlePay(elt.quantity, getMult(elt.quantity, elt.price))" type="submit" name="submit"><img src="../assets/images/bt_acheter.jpg" width="150px" height="50px"></button>
+    </td>
+  </tr>
+</table>
+<br/>
